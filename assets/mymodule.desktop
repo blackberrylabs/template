@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Mymodule
+GenericName=One sentence: what it answers
+GenericName[fr]=Une phrase : ce qu'il répond
+Comment=A sentence for the launcher. Reads, never writes.
+Comment[fr]=Une phrase pour le lanceur. Lit, n'écrit jamais.
+Exec=mymodule-app
+Icon=mymodule
+Terminal=false
+Categories=Development;Utility;
+Keywords=ai agents;
+StartupWMClass=mymodule-app

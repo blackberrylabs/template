@@ -1,0 +1,73 @@
+[package]
+name = "mymodule"
+description = "One sentence: what Mymodule answers — read-only"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "mymodule-app"
+path = "src/main.rs"
+
+[dependencies]
+mymodule-core = { path = "../core" }
+bbl-report.workspace = true
+iced = { version = "=0.13.1", features = ["tokio"] }
+bbl-ui.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+# ---------------------------------------------------------------- packaging
+# `packaging/build.sh` builds the workspace once, then runs `cargo deb --no-build` and
+# `cargo generate-rpm` from here, so one package ships both binaries.
+
+[package.metadata.deb]
+name = "mymodule"
+maintainer = "Alexandre Do <alexandre@blackberrylabs.dev>"
+copyright = "2026, Alexandre Do"
+license-file = ["../../LICENSE", "0"]
+extended-description = """\
+A short paragraph: what Mymodule reads, what it shows, what it never does. Ships the \
+desktop app (mymodule-app) and the command line (mymodule)."""
+section = "devel"
+priority = "optional"
+depends = "$auto, libxkbcommon0, libwayland-client0 | libx11-6"
+recommends = "libvulkan1, mesa-vulkan-drivers"
+assets = [
+    ["target/release/mymodule-app", "usr/bin/", "755"],
+    ["target/release/mymodule", "usr/bin/", "755"],
+    ["../../assets/mymodule.desktop", "usr/share/applications/", "644"],
+    ["../../assets/icon.svg", "usr/share/icons/hicolor/scalable/apps/mymodule.svg", "644"],
+    ["../../assets/icon-16.png", "usr/share/icons/hicolor/16x16/apps/mymodule.png", "644"],
+    ["../../assets/icon-32.png", "usr/share/icons/hicolor/32x32/apps/mymodule.png", "644"],
+    ["../../assets/icon-48.png", "usr/share/icons/hicolor/48x48/apps/mymodule.png", "644"],
+    ["../../assets/icon-64.png", "usr/share/icons/hicolor/64x64/apps/mymodule.png", "644"],
+    ["../../assets/icon-128.png", "usr/share/icons/hicolor/128x128/apps/mymodule.png", "644"],
+    ["../../assets/icon-256.png", "usr/share/icons/hicolor/256x256/apps/mymodule.png", "644"],
+    ["../../assets/icon-512.png", "usr/share/icons/hicolor/512x512/apps/mymodule.png", "644"],
+    ["../../README.md", "usr/share/doc/mymodule/README.md", "644"],
+]
+
+[package.metadata.generate-rpm]
+name = "mymodule"
+summary = "One sentence: what Mymodule answers"
+license = "MIT"
+url = "https://github.com/blackberrylabs/mymodule"
+requires = { libxkbcommon = "*" }
+assets = [
+    { source = "target/release/mymodule-app", dest = "/usr/bin/mymodule-app", mode = "755" },
+    { source = "target/release/mymodule", dest = "/usr/bin/mymodule", mode = "755" },
+    { source = "assets/mymodule.desktop", dest = "/usr/share/applications/mymodule.desktop", mode = "644" },
+    { source = "assets/icon.svg", dest = "/usr/share/icons/hicolor/scalable/apps/mymodule.svg", mode = "644" },
+    { source = "assets/icon-16.png", dest = "/usr/share/icons/hicolor/16x16/apps/mymodule.png", mode = "644" },
+    { source = "assets/icon-32.png", dest = "/usr/share/icons/hicolor/32x32/apps/mymodule.png", mode = "644" },
+    { source = "assets/icon-48.png", dest = "/usr/share/icons/hicolor/48x48/apps/mymodule.png", mode = "644" },
+    { source = "assets/icon-64.png", dest = "/usr/share/icons/hicolor/64x64/apps/mymodule.png", mode = "644" },
+    { source = "assets/icon-128.png", dest = "/usr/share/icons/hicolor/128x128/apps/mymodule.png", mode = "644" },
+    { source = "assets/icon-256.png", dest = "/usr/share/icons/hicolor/256x256/apps/mymodule.png", mode = "644" },
+    { source = "assets/icon-512.png", dest = "/usr/share/icons/hicolor/512x512/apps/mymodule.png", mode = "644" },
+    { source = "README.md", dest = "/usr/share/doc/mymodule/README.md", mode = "644", doc = true },
+    { source = "LICENSE", dest = "/usr/share/licenses/mymodule/LICENSE", mode = "644", doc = true },
+]
